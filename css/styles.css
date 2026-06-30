@@ -24,6 +24,7 @@
   --shadow-sm: 0 4px 14px rgba(17, 32, 58, 0.08);
   --container: 1140px;
   --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-head: "Poppins", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 /* ---------- Reset / base ---------- */
@@ -39,7 +40,7 @@ body {
 }
 img { max-width: 100%; display: block; }
 a { color: var(--brand); text-decoration: none; }
-h1, h2, h3 { color: var(--ink); line-height: 1.2; margin: 0 0 .5em; }
+h1, h2, h3 { font-family: var(--font-head); color: var(--ink); line-height: 1.2; margin: 0 0 .5em; letter-spacing: -.01em; }
 h2 { font-size: clamp(1.6rem, 4vw, 2.3rem); }
 p { margin: 0 0 1rem; }
 ul { margin: 0; padding: 0; list-style: none; }
@@ -99,9 +100,9 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* ---------- Hero ---------- */
 .hero { background: linear-gradient(160deg, var(--brand-light), #fff 70%); padding: 40px 0 48px; }
 .hero__grid { display: grid; gap: 28px; align-items: center; }
-.hero__kicker { font-weight: 800; color: var(--brand); font-size: clamp(1rem, 3.4vw, 1.3rem); letter-spacing: .01em; margin: 0 0 10px; }
+.hero__kicker { font-family: var(--font-head); font-weight: 700; color: var(--brand); font-size: clamp(1rem, 3.4vw, 1.3rem); letter-spacing: .01em; margin: 0 0 10px; text-shadow: 0 1px 2px rgba(11,95,176,.12); }
 .hero__kicker i { color: var(--accent); font-style: normal; margin: 0 4px; }
-.hero h1 { font-size: clamp(1.9rem, 6vw, 3.1rem); }
+.hero h1 { font-size: clamp(1.9rem, 6vw, 3.1rem); text-shadow: 0 2px 6px rgba(17,32,58,.10); }
 .hero__sub { font-size: 1.1rem; color: var(--body); max-width: 540px; }
 .hero__ctas { display: flex; flex-wrap: wrap; gap: 12px; margin: 22px 0 0; }
 
@@ -124,7 +125,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* Trust bar below hero */
 .trust-bar { background: var(--ink); color: #fff; padding: 16px 0; }
 .trust-strip--bar { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; }
-.trust-strip--bar li { color: #e7eefb; font-size: .9rem; justify-content: flex-start; }
+.trust-strip--bar li { color: #e7eefb; font-size: .88rem; justify-content: flex-start; white-space: nowrap; }
 .trust-strip--bar svg { color: var(--accent); }
 
 /* ---------- Booking form ---------- */
@@ -165,12 +166,18 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .card {
   background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
-  padding: 22px; box-shadow: var(--shadow-sm); transition: transform .18s ease, box-shadow .18s ease;
+  padding: 22px; box-shadow: var(--shadow-sm);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
-.card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.card:hover, .card:focus-within {
+  transform: translateY(-6px); box-shadow: var(--shadow); border-color: var(--brand);
+}
+.card:active { transform: translateY(-2px); }
+.card:hover .icon-badge { transform: scale(1.08) rotate(-3deg); }
 .icon-badge {
   width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center;
   background: var(--brand-light); color: var(--brand); margin-bottom: 14px;
+  transition: transform .2s ease;
 }
 .card h3 { font-size: 1.1rem; margin-bottom: 6px; }
 .card p { margin: 0; color: var(--body); font-size: .95rem; }
@@ -240,7 +247,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* ---------- Service area ---------- */
 .map-wrap { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow-sm); }
 .map-wrap iframe { width: 100%; height: 340px; border: 0; display: block; }
-.area-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 4px; }
+.area-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 18px 0 4px; }
 .area-chips li {
   display: inline-flex; align-items: center; gap: 6px; font-size: .85rem; font-weight: 600; color: var(--brand);
   background: var(--brand-light); border: 1px solid #d4e4f7; border-radius: 999px; padding: 6px 12px;
@@ -276,6 +283,31 @@ ul { margin: 0; padding: 0; list-style: none; }
 .float-btn:hover { transform: scale(1.06); }
 .call-float { background: var(--brand); box-shadow: 0 10px 24px rgba(11,95,176,.45); }
 .wa-float { background: #25d366; box-shadow: 0 10px 24px rgba(37,211,102,.45); }
+
+/* ---------- Booking modal ---------- */
+.modal { position: fixed; inset: 0; z-index: 100; display: none; }
+.modal.open { display: block; }
+.modal__backdrop { position: absolute; inset: 0; background: rgba(11,24,45,.55); backdrop-filter: blur(2px); }
+.modal__dialog {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: min(640px, calc(100vw - 28px)); max-height: calc(100vh - 28px); overflow: auto;
+  background: var(--bg); border-radius: var(--radius); box-shadow: 0 24px 60px rgba(11,24,45,.35);
+  animation: modalIn .2s ease;
+}
+@keyframes modalIn { from { opacity: 0; transform: translate(-50%, -46%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+.modal__head {
+  position: sticky; top: 0; display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; background: var(--bg); border-bottom: 1px solid var(--line); border-radius: var(--radius) var(--radius) 0 0;
+}
+.modal__head h3 { margin: 0; font-size: 1.2rem; }
+.modal__close {
+  display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%;
+  border: 0; background: var(--bg-soft); color: var(--ink); cursor: pointer; transition: background .15s ease;
+}
+.modal__close:hover { background: var(--line); }
+.modal__body { padding: 18px 20px 22px; }
+/* Inside the modal the form-card is flush (no double border/shadow) */
+.modal__body .form-card { max-width: none !important; margin: 0 !important; border: 0; box-shadow: none; padding: 0; }
 
 /* ---------- Reveal animation ---------- */
 .reveal { opacity: 0; transform: translateY(16px); transition: opacity .5s ease, transform .5s ease; }

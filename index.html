@@ -10,7 +10,7 @@
   <!-- Fonts: single request + preconnect for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -96,7 +96,8 @@
           <p>Fill in your details and we'll confirm your booking right away.</p>
         </div>
 
-        <div class="form-card" style="max-width:760px;margin:0 auto">
+        <div id="bookingHome">
+        <div class="form-card" id="bookingFormCard" style="max-width:760px;margin:0 auto">
           <form id="bookingForm" novalidate>
             <div class="form-grid">
               <div class="field">
@@ -167,6 +168,7 @@
             <a href="#" data-wa class="btn btn--brand" style="margin-top:14px">Chat with us on WhatsApp</a>
           </div>
         </div>
+        </div><!-- /#bookingHome -->
       </div>
     </section>
 
@@ -340,6 +342,20 @@
       </div>
     </div>
   </footer>
+
+  <!-- Booking modal (Book buttons relocate the form here; inline form is the no-JS fallback) -->
+  <div class="modal" id="bookingModal" aria-hidden="true">
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-label="Book a Service">
+      <div class="modal__head">
+        <h3>Book a Service</h3>
+        <button class="modal__close" data-close-modal aria-label="Close booking form">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div class="modal__body" id="modalBody"></div>
+    </div>
+  </div>
 
   <!-- Floating action buttons (emergency reach): Call + WhatsApp -->
   <div class="float-stack">

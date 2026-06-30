@@ -25,6 +25,7 @@
     invoice: '<path d="M6 2h9l5 5v15H6V2Zm8 1.5V8h4.5L14 3.5ZM8 11h8v2H8v-2Zm0 4h8v2H8v-2Z"/>',
     clock: '<path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 10V6h-2v7l5 3 1-1.7-4-2.3Z"/>',
     card: '<path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm-1 4h20v2H2V9Zm3 5h6v2H5v-2Z"/>',
+    coins: '<path d="M12 2c-4.4 0-8 1.57-8 3.5S7.6 9 12 9s8-1.57 8-3.5S16.4 2 12 2Zm-8 5.5v3C4 12.43 7.6 14 12 14s8-1.57 8-3.5v-3C20 9.43 16.4 11 12 11S4 9.43 4 7.5Zm0 5v3C4 17.43 7.6 19 12 19s8-1.57 8-3.5v-3C20 14.43 16.4 16 12 16s-8-1.57-8-3.5Z"/>',
     lock: '<path d="M6 10V8a6 6 0 0 1 12 0v2h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h1Zm2 0h8V8a4 4 0 0 0-8 0v2Zm4 4a1.5 1.5 0 0 0-1 2.6V18h2v-1.4a1.5 1.5 0 0 0-1-2.6Z"/>',
     company: '<path d="M3 21V8l7-4 7 4v3h4v10h-7v-5h-2v5H3Zm7-9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/>',
     medal: '<path d="M8 2h8l-2 6h-4L8 2Zm4 7a6 6 0 1 1 0 12 6 6 0 0 1 0-12Zm0 2.6L10.9 14l-2.4.2 1.8 1.6-.5 2.4 2.2-1.2 2.2 1.2-.5-2.4 1.8-1.6-2.4-.2L12 11.6Z"/>',
@@ -55,8 +56,8 @@
     { icon: "medal", title: "Experienced Company", desc: "Years of expertise in electrical & power-backup solutions." },
     { icon: "invoice", title: "GST Registered Business", desc: "A registered, compliant business you can trust." },
     { icon: "shield", title: "Verified Technicians", desc: "Background-checked, trained & ID-verified professionals." },
-    { icon: "card", title: "Digital Invoicing", desc: "Instant, itemised invoices delivered digitally on every job." },
-    { icon: "lock", title: "Secure Online Payments", desc: "Pay safely via UPI, cards or net-banking." },
+    { icon: "invoice", title: "Digital Invoicing", desc: "Instant, itemised invoices delivered digitally on every job." },
+    { icon: "coins", title: "Secure Online Payments", desc: "Pay safely via UPI, cards or net-banking." },
     { icon: "check", title: "OTP-Based Job Completion", desc: "Work is marked complete only after your OTP confirmation." }
   ];
 
@@ -65,9 +66,9 @@
     { icon: "shield", label: "Verified Technicians" },
     { icon: "rupee", label: "Transparent Pricing" },
     { icon: "invoice", label: "Digital Invoice" },
-    { icon: "card", label: "Online Payments" },
+    { icon: "coins", label: "Online Payments" },
     { icon: "medal", label: "Service Warranty" },
-    { icon: "clock", label: "Same-Day Service*" }
+    { icon: "clock", label: "Same-Day Service" }
   ];
 
   // Post-booking journey shown in the success state.
@@ -329,6 +330,45 @@
     });
   }
 
+  /* ---------- Booking modal ----------
+     The single booking form lives inline (no-JS fallback). "Book" buttons
+     relocate that form into the modal so there's only ever one form/IDs. */
+  function initBookingModal() {
+    var modal = $("#bookingModal");
+    var card = $("#bookingFormCard");
+    var home = $("#bookingHome");
+    var body = $("#modalBody");
+    if (!modal || !card || !home || !body) return;
+    var lastFocus = null;
+
+    function openModal(e) {
+      if (e) e.preventDefault();
+      lastFocus = document.activeElement;
+      body.appendChild(card);                 // move form into modal
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      var first = $("#name"); if (first) setTimeout(function () { first.focus(); }, 60);
+    }
+    function closeModal() {
+      home.appendChild(card);                  // return form to its inline home
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    // Any link to #book or [data-book] opens the modal instead of scrolling.
+    document.addEventListener("click", function (e) {
+      var trigger = e.target.closest('a[href="#book"], [data-book]');
+      if (trigger) { openModal(e); return; }
+      if (e.target.closest("[data-close-modal]")) closeModal();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+    });
+  }
+
   /* ---------- Init ---------- */
   document.addEventListener("DOMContentLoaded", function () {
     renderTrustStrip();
@@ -342,6 +382,7 @@
     initNav();
     initFaq();
     initForm();
+    initBookingModal();
     initReveal();
   });
 })();
