@@ -27,4 +27,28 @@ const CONFIG = {
   address: "Dhruta Complex, 104 & 105, NC Kelkar Road, Narayan Peth, Pune 411030",
   hours: "Mon–Sat, 10 AM – 7 PM · 24/7 Emergency Support",
   coverage: "10–15 km radius from Narayan Peth, Pune",
+
+  // Optional second contact number (leave "" to hide)
+  phone2: "",
+
+  // ---- Legal / business details (CLIENT: replace placeholders below) ----
+  // Any field left empty ("") is automatically hidden in the footer.
+  gst: "27AAQPW8611H1Z2",   // GSTIN
+  cin: "",                                          // CIN / legal entity name, if applicable (empty = hidden)
+  // Google Business / reviews link — used by the Reviews section & review request.
+  googleReviewUrl: "https://www.google.com/maps?q=Sonic+Distributors,+Narayan+Peth,+Pune",
+
+  // Areas currently served (shown as chips in the Service Area section)
+  areas: [
+    "Narayan Peth",
+    "Sadashiv Peth",
+    "Deccan",
+    "Erandwane",
+    "Shivajinagar",
+    "Navi Peth",
+    "Karve Nagar",
+    "Kothrud (selected areas)",
+    "Swargate",
+    "Camp (selected areas)",
+  ],
 };

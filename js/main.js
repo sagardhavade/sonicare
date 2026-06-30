@@ -24,7 +24,14 @@
     star: '<path d="m12 2 3 6.3 7 .9-5 4.7 1.3 6.8L12 17.6 5.7 20.7 7 13.9 2 9.2l7-.9L12 2Z"/>',
     invoice: '<path d="M6 2h9l5 5v15H6V2Zm8 1.5V8h4.5L14 3.5ZM8 11h8v2H8v-2Zm0 4h8v2H8v-2Z"/>',
     clock: '<path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 10V6h-2v7l5 3 1-1.7-4-2.3Z"/>',
-    card: '<path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm-1 4h20v2H2V9Zm3 5h6v2H5v-2Z"/>'
+    card: '<path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm-1 4h20v2H2V9Zm3 5h6v2H5v-2Z"/>',
+    lock: '<path d="M6 10V8a6 6 0 0 1 12 0v2h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h1Zm2 0h8V8a4 4 0 0 0-8 0v2Zm4 4a1.5 1.5 0 0 0-1 2.6V18h2v-1.4a1.5 1.5 0 0 0-1-2.6Z"/>',
+    company: '<path d="M3 21V8l7-4 7 4v3h4v10h-7v-5h-2v5H3Zm7-9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/>',
+    medal: '<path d="M8 2h8l-2 6h-4L8 2Zm4 7a6 6 0 1 1 0 12 6 6 0 0 1 0-12Zm0 2.6L10.9 14l-2.4.2 1.8 1.6-.5 2.4 2.2-1.2 2.2 1.2-.5-2.4 1.8-1.6-2.4-.2L12 11.6Z"/>',
+    chat: '<path d="M4 3h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H8l-4 4V4a1 1 0 0 1 1-1Zm3 5v2h10V8H7Zm0 4v2h7v-2H7Z"/>',
+    sms: '<path d="M3 4h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H7l-4 4V5a1 1 0 0 1 1-1Zm4 5v2h10V9H7Zm0 4v2h6v-2H7Z"/>',
+    user: '<path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5 0-9 2.5-9 6v2h18v-2c0-3.5-4-6-9-6Z"/>',
+    pin: '<path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/>'
   };
   function svg(name) {
     return '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' + (ICONS[name] || ICONS.bolt) + '</svg>';
@@ -42,25 +49,42 @@
     { icon: "alert", title: "Emergency Services", desc: "Rapid response for urgent electrical faults." }
   ];
 
+  // "Why Trust Sonic?" — real, verifiable facts (no invented metrics).
   var WHY = [
+    { icon: "company", title: "Powered by Sonic Distributors", desc: "Backed by an established Pune-based power-solutions company." },
+    { icon: "medal", title: "Experienced Company", desc: "Years of expertise in electrical & power-backup solutions." },
+    { icon: "invoice", title: "GST Registered Business", desc: "A registered, compliant business you can trust." },
     { icon: "shield", title: "Verified Technicians", desc: "Background-checked, trained & ID-verified professionals." },
-    { icon: "rupee", title: "Transparent Pricing", desc: "Clear starting prices with no hidden charges." },
-    { icon: "invoice", title: "Digital Invoice", desc: "Instant, itemised invoices delivered digitally." },
-    { icon: "check", title: "OTP Verified Completion", desc: "Job marked done only after your OTP confirmation." },
-    { icon: "clock", title: "Same-Day Service", desc: "Fast slots, often same-day for nearby areas." },
-    { icon: "card", title: "Online Payments", desc: "Pay securely via UPI, cards or net-banking." }
+    { icon: "card", title: "Digital Invoicing", desc: "Instant, itemised invoices delivered digitally on every job." },
+    { icon: "lock", title: "Secure Online Payments", desc: "Pay safely via UPI, cards or net-banking." },
+    { icon: "check", title: "OTP-Based Job Completion", desc: "Work is marked complete only after your OTP confirmation." }
+  ];
+
+  // Trust strip below the hero (quick reassurance badges).
+  var TRUST_STRIP = [
+    { icon: "shield", label: "Verified Technicians" },
+    { icon: "rupee", label: "Transparent Pricing" },
+    { icon: "invoice", label: "Digital Invoice" },
+    { icon: "card", label: "Online Payments" },
+    { icon: "medal", label: "Service Warranty" },
+    { icon: "clock", label: "Same-Day Service*" }
+  ];
+
+  // Post-booking journey shown in the success state.
+  var BOOKING_JOURNEY = [
+    { icon: "chat", label: "WhatsApp confirmation" },
+    { icon: "sms", label: "SMS confirmation" },
+    { icon: "user", label: "Technician assignment" },
+    { icon: "check", label: "OTP verification on completion" },
+    { icon: "invoice", label: "Digital invoice" },
+    { icon: "card", label: "Secure payment link" },
+    { icon: "star", label: "Google review request" }
   ];
 
   var PRICING = [
     { title: "Home Visit & Diagnosis", price: "₹199", unit: "/ visit", points: ["On-site inspection", "Expert assessment", "Adjusted in final bill"] },
     { title: "Switch / Socket Repair", price: "₹149", unit: "starting", points: ["Per point", "Genuine components", "Service warranty"] },
     { title: "Inverter / UPS Service", price: "₹499", unit: "starting", points: ["Full diagnostics", "Battery health check", "Performance tuning"] }
-  ];
-
-  var REVIEWS = [
-    { name: "Priya Deshpande", area: "Kothrud, Pune", text: "Electrician arrived the same day and fixed our wiring issue quickly. Clean work and fair pricing!", rating: 5 },
-    { name: "Amit Joshi", area: "Shivaji Nagar", text: "Got our office UPS serviced. Professional team, digital invoice and OTP confirmation — very organised.", rating: 5 },
-    { name: "Sneha Kulkarni", area: "Narayan Peth", text: "Booked an emergency service at night. Quick response and the technician was polite and skilled.", rating: 5 }
   ];
 
   var FAQS = [
@@ -105,16 +129,23 @@
     }).join("");
     var el = $("#pricingGrid"); if (el) el.innerHTML = html;
   }
-  function renderReviews() {
-    var html = REVIEWS.map(function (r) {
-      var stars = "★★★★★".slice(0, r.rating);
-      var initial = r.name.charAt(0);
-      return '<div class="card review reveal"><div class="stars">' + stars + '</div>' +
-        '<p>“' + r.text + '”</p>' +
-        '<div class="review__author"><span class="avatar">' + initial + '</span>' +
-        '<span><b>' + r.name + '</b><span>' + r.area + '</span></span></div></div>';
+  function renderTrustStrip() {
+    var el = $("#trustStrip"); if (!el) return;
+    el.innerHTML = TRUST_STRIP.map(function (t) {
+      return '<li>' + svg(t.icon) + '<span>' + t.label + '</span></li>';
     }).join("");
-    var el = $("#reviewGrid"); if (el) el.innerHTML = html;
+  }
+  function renderAreas() {
+    var el = $("#areaChips"); if (!el || !CONFIG.areas) return;
+    el.innerHTML = CONFIG.areas.map(function (a) {
+      return '<li>' + svg("pin") + '<span>' + a + '</span></li>';
+    }).join("");
+  }
+  function renderJourney() {
+    var el = $("#journeyList"); if (!el) return;
+    el.innerHTML = BOOKING_JOURNEY.map(function (j) {
+      return '<li>' + svg(j.icon) + '<span>' + j.label + '</span></li>';
+    }).join("");
   }
   function renderFaq() {
     var html = FAQS.map(function (f) {
@@ -130,12 +161,34 @@
   function waLink() {
     return "https://wa.me/" + CONFIG.whatsappNumber + "?text=" + encodeURIComponent(CONFIG.whatsappMessage);
   }
+  // Set text on an element, or hide its <li> wrapper when value is empty.
+  function setOrHide(id, value, prefix) {
+    var span = $("#" + id); if (!span) return;
+    if (value && String(value).trim()) {
+      span.textContent = (prefix || "") + value;
+    } else {
+      var li = span.closest("li") || span; li.style.display = "none";
+    }
+  }
   function applyConfig() {
     $$("[data-wa]").forEach(function (a) { a.setAttribute("href", waLink()); a.setAttribute("target", "_blank"); a.setAttribute("rel", "noopener"); });
     $$("[data-call]").forEach(function (a) { a.setAttribute("href", "tel:" + CONFIG.phone); });
+
+    // Footer "Get In Touch" email link
     var fe = $("#footerEmail"); if (fe) { fe.setAttribute("href", "mailto:" + CONFIG.email); fe.textContent = "Email"; }
-    var fa = $("#footerAddress"); if (fa) fa.textContent = CONFIG.address;
-    var fh = $("#footerHours"); if (fh) fh.textContent = CONFIG.hours;
+
+    // Footer contact + business details (empty fields auto-hide)
+    setOrHide("footerAddress", CONFIG.address);
+    var phones = [CONFIG.phone, CONFIG.phone2].filter(function (p) { return p && String(p).trim(); }).join(" · ");
+    setOrHide("footerPhone", phones);
+    setOrHide("footerEmailText", CONFIG.email);
+    setOrHide("footerHours", CONFIG.hours);
+    setOrHide("footerGst", CONFIG.gst, "GSTIN: ");
+    setOrHide("footerCin", CONFIG.cin, "CIN: ");
+
+    // Reviews CTA → Google
+    var rb = $("#reviewBtn"); if (rb && CONFIG.googleReviewUrl) rb.setAttribute("href", CONFIG.googleReviewUrl);
+
     var ct = $("#coverageText"); if (ct) ct.textContent = "Current coverage: " + CONFIG.coverage + ".";
     var map = $("#mapFrame"); if (map) map.setAttribute("src", CONFIG.mapEmbedSrc);
     var yr = $("#year"); if (yr) yr.textContent = new Date().getFullYear();
@@ -278,10 +331,12 @@
 
   /* ---------- Init ---------- */
   document.addEventListener("DOMContentLoaded", function () {
+    renderTrustStrip();
     renderServices();
     renderWhy();
     renderPricing();
-    renderReviews();
+    renderAreas();
+    renderJourney();
     renderFaq();
     applyConfig();
     initNav();

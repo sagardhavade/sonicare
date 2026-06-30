@@ -27,9 +27,10 @@
 
       <nav class="nav" aria-label="Primary">
         <a href="#services">Services</a>
-        <a href="#why">Why Us</a>
+        <a href="#why">Why Sonic</a>
+        <a href="#about">About</a>
         <a href="#pricing">Pricing</a>
-        <a href="#reviews">Reviews</a>
+        <a href="#area">Service Area</a>
         <a href="#faq">FAQ</a>
       </nav>
 
@@ -41,9 +42,10 @@
     </div>
     <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
       <a href="#services">Services</a>
-      <a href="#why">Why Us</a>
+      <a href="#why">Why Sonic</a>
+      <a href="#about">About</a>
       <a href="#pricing">Pricing</a>
-      <a href="#reviews">Reviews</a>
+      <a href="#area">Service Area</a>
       <a href="#faq">FAQ</a>
       <a href="#book" class="btn btn--primary">Book a Service</a>
     </nav>
@@ -55,33 +57,33 @@
     <section class="hero">
       <div class="container hero__grid">
         <div>
-          <span class="eyebrow">Trust Delivered · Pune</span>
-          <h1>Trusted Electrical &amp; Power Services at Your Doorstep</h1>
-          <p class="hero__sub">Fast, Professional &amp; Verified Electricians for Homes and Businesses.</p>
+          <span class="eyebrow">Powered by Sonic Distributors · Pune</span>
+          <p class="hero__kicker">Electrical <i>|</i> UPS <i>|</i> Batteries <i>|</i> Solar <i>|</i> CCTV</p>
+          <h1>One Trusted Partner for Every Power Need</h1>
+          <p class="hero__sub">Professional electrical and power services for homes and businesses across Pune.</p>
           <div class="hero__ctas">
-            <a href="#book" class="btn btn--primary btn--lg">Book a Service</a>
+            <a href="#book" class="btn btn--primary btn--lg">Book Service</a>
             <a href="#" data-call class="btn btn--ghost btn--lg">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.58 3.6a1 1 0 0 1-.25 1l-2.23 2.2Z"/></svg>
               Call Now
             </a>
           </div>
-          <ul class="trust-strip">
-            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="m9 16.2-3.5-3.5L4 14.2 9 19l11-11-1.5-1.4Z"/></svg> Verified Technicians</li>
-            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="m9 16.2-3.5-3.5L4 14.2 9 19l11-11-1.5-1.4Z"/></svg> Same-Day Service</li>
-            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="m9 16.2-3.5-3.5L4 14.2 9 19l11-11-1.5-1.4Z"/></svg> Service Warranty</li>
-          </ul>
         </div>
 
-        <!-- Hero card mirrors the booking value prop -->
-        <aside class="hero__card" aria-label="Quick highlights">
-          <div class="stats">
-            <div><div class="stat__num" data-count="5000">5,000+</div><div class="stat__label">Jobs Completed</div></div>
-            <div><div class="stat__num" data-count="4.8">4.8★</div><div class="stat__label">Avg. Rating</div></div>
-            <div><div class="stat__num" data-count="60">&lt;60m</div><div class="stat__label">Avg. Response</div></div>
+        <!-- Media slot — real office / technician / installation photos drop in here -->
+        <aside class="hero__media" aria-label="Sonic Care team">
+          <div class="media-ph">
+            <svg width="46" height="46" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 2 7.2 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3.2L15 2H9Zm3 5a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>
+            <span>Real photos of our team &amp; installations coming soon</span>
           </div>
-          <a href="#book" class="btn btn--brand btn--block btn--lg">Get an Electrician Today</a>
-          <p class="form-note" style="text-align:center;margin-top:12px">Transparent pricing · Digital invoice · OTP-verified completion</p>
         </aside>
+      </div>
+    </section>
+
+    <!-- ===================== TRUST STRIP (below hero) ===================== -->
+    <section class="trust-bar" aria-label="Why customers trust Sonic Care">
+      <div class="container">
+        <ul class="trust-strip trust-strip--bar" id="trustStrip"></ul>
       </div>
     </section>
 
@@ -160,7 +162,8 @@
             <h3 style="margin:8px 0 4px">Booking Confirmed!</h3>
             <p style="margin:0">Your Booking ID is</p>
             <div class="bid" id="bookingId">SC-000000-0000</div>
-            <p style="margin:0">Our team will reach out shortly to confirm your slot.</p>
+            <p style="margin:14px 0 6px"><strong>Here's what happens next:</strong></p>
+            <ul class="journey" id="journeyList"></ul>
             <a href="#" data-wa class="btn btn--brand" style="margin-top:14px">Chat with us on WhatsApp</a>
           </div>
         </div>
@@ -181,20 +184,41 @@
       </div>
     </section>
 
-    <!-- ===================== WHY CHOOSE US ===================== -->
+    <!-- ===================== WHY TRUST SONIC ===================== -->
     <section class="section" id="why">
       <div class="container">
         <div class="section__head">
-          <span class="eyebrow">The Sonic Care Promise</span>
-          <h2>Why Choose Sonic Care</h2>
-          <p>Reliability you can measure on every job.</p>
+          <span class="eyebrow">Built on Real Trust</span>
+          <h2>Why Trust Sonic?</h2>
+          <p>A new brand backed by a proven company — credibility built on facts, not claims.</p>
         </div>
         <div class="grid grid--3" id="whyGrid"></div>
       </div>
     </section>
 
+    <!-- ===================== ABOUT SONIC ===================== -->
+    <section class="section section--soft" id="about">
+      <div class="container about__grid">
+        <!-- Media slot — real office / team photo drops in here -->
+        <div class="about__media">
+          <div class="media-ph">
+            <svg width="46" height="46" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 21V5a1 1 0 0 1 1-1h7v17H3Zm10 0V9h7a1 1 0 0 1 1 1v11h-8ZM6 7h2v2H6V7Zm0 4h2v2H6v-2Zm0 4h2v2H6v-2Z"/></svg>
+            <span>Photos of our office &amp; team coming soon</span>
+          </div>
+        </div>
+        <div>
+          <span class="eyebrow">About Sonic</span>
+          <h2>Backed by Sonic Distributors</h2>
+          <p>Sonic Care is the doorstep-services arm of <strong>Sonic Distributors</strong>, a trusted Pune-based company with years of expertise in electrical and power-backup solutions for homes and businesses.</p>
+          <p>We bring that same reliability to your doorstep — combining experienced, verified technicians with a fully digital, technology-enabled service experience: transparent pricing, digital invoices, OTP-verified completion and secure online payments.</p>
+          <p style="margin:0"><em>Trust Delivered.</em></p>
+          <a href="#book" class="btn btn--primary" style="margin-top:18px">Book a Service</a>
+        </div>
+      </div>
+    </section>
+
     <!-- ===================== HOW IT WORKS ===================== -->
-    <section class="section section--soft">
+    <section class="section">
       <div class="container">
         <div class="section__head">
           <span class="eyebrow">Simple Process</span>
@@ -210,7 +234,7 @@
     </section>
 
     <!-- ===================== PRICING ===================== -->
-    <section class="section" id="pricing">
+    <section class="section section--soft" id="pricing">
       <div class="container">
         <div class="section__head">
           <span class="eyebrow">Transparent Pricing</span>
@@ -223,24 +247,23 @@
     </section>
 
     <!-- ===================== REVIEWS ===================== -->
-    <section class="section section--soft" id="reviews">
+    <section class="section" id="reviews">
       <div class="container">
         <div class="section__head">
-          <span class="eyebrow">Loved by Customers</span>
-          <h2>Customer Reviews</h2>
-          <p>Real feedback from homes and businesses across Pune.</p>
+          <span class="eyebrow">Honest Reviews</span>
+          <h2>Real Reviews, Real Trust</h2>
         </div>
-        <div class="stats" style="max-width:620px;margin:0 auto 30px">
-          <div><div class="stat__num">5,000+</div><div class="stat__label">Jobs Completed</div></div>
-          <div><div class="stat__num">4.8★</div><div class="stat__label">Google Rating</div></div>
-          <div><div class="stat__num">1,200+</div><div class="stat__label">5-Star Reviews</div></div>
+        <div class="reviews-cta card">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="#fbbc05" aria-hidden="true"><path d="m12 2 3 6.3 7 .9-5 4.7 1.3 6.8L12 17.6 5.7 20.7 7 13.9 2 9.2l7-.9L12 2Z"/></svg>
+          <p>We're a new brand earning trust one job at a time. Every completed service ends with a Google review request — so what you read about us is <strong>100% genuine</strong>, from real customers.</p>
+          <a id="reviewBtn" href="#" target="_blank" rel="noopener" class="btn btn--brand btn--lg">Read our Google Reviews</a>
+          <p class="form-note" style="margin:12px 0 0">Be among our first customers — book a service and share your honest experience.</p>
         </div>
-        <div class="grid grid--3" id="reviewGrid"></div>
       </div>
     </section>
 
     <!-- ===================== FAQ ===================== -->
-    <section class="section" id="faq">
+    <section class="section section--soft" id="faq">
       <div class="container">
         <div class="section__head">
           <span class="eyebrow">Got Questions?</span>
@@ -251,15 +274,17 @@
     </section>
 
     <!-- ===================== SERVICE AREA ===================== -->
-    <section class="section section--soft" id="area">
+    <section class="section" id="area">
       <div class="container">
         <div class="section__head">
           <span class="eyebrow">Service Area</span>
           <h2>We Cover Pune Near You</h2>
+          <p>Currently serving these areas — and expanding soon.</p>
         </div>
         <div class="map-wrap">
           <iframe id="mapFrame" title="Sonic Care service area — Narayan Peth, Pune" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
         </div>
+        <ul class="area-chips" id="areaChips" aria-label="Areas we serve"></ul>
         <p class="coverage-note">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>
           <span id="coverageText">Current coverage: 10–15 km radius from Narayan Peth, Pune.</span>
@@ -298,10 +323,14 @@
           </ul>
         </div>
         <div>
-          <h4>Contact</h4>
+          <h4>Contact &amp; Business Details</h4>
           <ul class="footer__contact">
             <li><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg><span id="footerAddress"></span></li>
-            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0-5a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z" opacity=".0"/><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/></svg><span id="footerHours"></span></li>
+            <li id="footerPhoneLi"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.58 3.6a1 1 0 0 1-.25 1l-2.23 2.2Z"/></svg><span id="footerPhone"></span></li>
+            <li id="footerEmailLi"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm.4 2L12 12.6 20.6 7H3.4Z"/></svg><span id="footerEmailText"></span></li>
+            <li id="footerHoursLi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span id="footerHours"></span></li>
+            <li id="footerGstLi"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 2h9l5 5v15H6V2Zm8 1.5V8h4.5L14 3.5ZM8 11h8v2H8v-2Zm0 4h8v2H8v-2Z"/></svg><span id="footerGst"></span></li>
+            <li id="footerCinLi"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 21V5a1 1 0 0 1 1-1h7v17H3Zm10 0V9h7a1 1 0 0 1 1 1v11h-8Z"/></svg><span id="footerCin"></span></li>
           </ul>
         </div>
       </div>
@@ -312,10 +341,15 @@
     </div>
   </footer>
 
-  <!-- Floating WhatsApp -->
-  <a href="#" data-wa class="wa-float" aria-label="Chat on WhatsApp">
-    <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.06 24l1.7-6.2A11.86 11.86 0 0 1 12 0a11.9 11.9 0 0 1 8.4 20.3A11.86 11.86 0 0 1 6.3 22.3L.06 24Zm6.6-3.8.4.24a9.9 9.9 0 1 0-3.4-3.4l.25.4-1 3.7 3.75-.94ZM17.5 14.3c-.25-.13-1.47-.72-1.7-.8-.23-.09-.4-.13-.56.13-.17.25-.65.8-.8.97-.14.17-.3.19-.55.06a8.1 8.1 0 0 1-2.4-1.48 9 9 0 0 1-1.66-2.06c-.17-.3 0-.45.12-.6.12-.12.25-.3.38-.46.13-.15.17-.26.25-.43.08-.17.04-.32-.02-.45-.06-.13-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1 2.57.13.17 1.75 2.67 4.23 3.74.59.25 1.05.4 1.41.52.6.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.2-.58.2-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>
-  </a>
+  <!-- Floating action buttons (emergency reach): Call + WhatsApp -->
+  <div class="float-stack">
+    <a href="#" data-call class="float-btn call-float" aria-label="Call Sonic Care now">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.58 3.6a1 1 0 0 1-.25 1l-2.23 2.2Z"/></svg>
+    </a>
+    <a href="#" data-wa class="float-btn wa-float" aria-label="Chat on WhatsApp">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.06 24l1.7-6.2A11.86 11.86 0 0 1 12 0a11.9 11.9 0 0 1 8.4 20.3A11.86 11.86 0 0 1 6.3 22.3L.06 24Zm6.6-3.8.4.24a9.9 9.9 0 1 0-3.4-3.4l.25.4-1 3.7 3.75-.94ZM17.5 14.3c-.25-.13-1.47-.72-1.7-.8-.23-.09-.4-.13-.56.13-.17.25-.65.8-.8.97-.14.17-.3.19-.55.06a8.1 8.1 0 0 1-2.4-1.48 9 9 0 0 1-1.66-2.06c-.17-.3 0-.45.12-.6.12-.12.25-.3.38-.46.13-.15.17-.26.25-.43.08-.17.04-.32-.02-.45-.06-.13-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1 2.57.13.17 1.75 2.67 4.23 3.74.59.25 1.05.4 1.41.52.6.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.2-.58.2-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>
+    </a>
+  </div>
 
   <script src="js/config.js"></script>
   <script src="js/main.js" defer></script>
