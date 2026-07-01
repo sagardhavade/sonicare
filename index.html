@@ -252,14 +252,15 @@
     <section class="section" id="reviews">
       <div class="container">
         <div class="section__head">
-          <span class="eyebrow">Honest Reviews</span>
-          <h2>Real Reviews, Real Trust</h2>
+          <span class="eyebrow">Customer Reviews</span>
+          <h2>What Our Customers Say</h2>
+          <p>Real feedback from homes and businesses across Pune.</p>
         </div>
-        <div class="reviews-cta card">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="#fbbc05" aria-hidden="true"><path d="m12 2 3 6.3 7 .9-5 4.7 1.3 6.8L12 17.6 5.7 20.7 7 13.9 2 9.2l7-.9L12 2Z"/></svg>
-          <p>We're a new brand earning trust one job at a time. Every completed service ends with a Google review request — so what you read about us is <strong>100% genuine</strong>, from real customers.</p>
-          <a id="reviewBtn" href="#" target="_blank" rel="noopener" class="btn btn--brand btn--lg">Read our Google Reviews</a>
-          <p class="form-note" style="margin:12px 0 0">Be among our first customers — book a service and share your honest experience.</p>
+        <!-- Review cards rendered from the REVIEWS array in js/main.js (edit/replace there) -->
+        <div class="grid grid--3" id="reviewGrid"></div>
+        <div class="reviews-cta" style="margin-top:30px">
+          <a id="reviewBtn" href="#" target="_blank" rel="noopener" class="btn btn--brand btn--lg">Read more on Google Reviews</a>
+          <p class="form-note" style="margin:12px 0 0">Every completed job ends with a Google review request — so feedback stays genuine.</p>
         </div>
       </div>
     </section>

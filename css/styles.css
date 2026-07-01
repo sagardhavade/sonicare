@@ -253,7 +253,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   background: var(--brand-light); border: 1px solid #d4e4f7; border-radius: 999px; padding: 6px 12px;
 }
 .area-chips svg { width: 15px; height: 15px; flex: none; }
-.coverage-note { display: flex; align-items: center; gap: 10px; margin-top: 16px; font-weight: 600; color: var(--ink); }
+.coverage-note { display: flex; align-items: center; justify-content: center; text-align: center; gap: 10px; margin-top: 16px; font-weight: 600; color: var(--ink); }
 .coverage-note svg { color: var(--brand); flex: none; }
 
 /* ---------- Footer ---------- */
@@ -323,6 +323,9 @@ ul { margin: 0; padding: 0; list-style: none; }
   .field--full { grid-column: 1 / -1; }
   .trust-strip--bar { grid-template-columns: repeat(3, 1fr); }
   .about__grid { grid-template-columns: 1fr 1fr; }
+  /* Center a lone last card on the final row of a 3-column grid (e.g. Why Trust's 7th, Reviews' 10th) */
+  #whyGrid .card:last-child:nth-child(3n+1),
+  #reviewGrid .card:last-child:nth-child(3n+1) { grid-column: 2; }
 }
 @media (min-width: 900px) {
   .section { padding: 72px 0; }

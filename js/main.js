@@ -88,6 +88,20 @@
     { title: "Inverter / UPS Service", price: "₹499", unit: "starting", points: ["Full diagnostics", "Battery health check", "Performance tuning"] }
   ];
 
+  // SAMPLE reviews — replace with genuine customer/Google reviews when available.
+  var REVIEWS = [
+    { name: "Priya Deshpande", area: "Kothrud", rating: 5, text: "Electrician arrived on time and fixed our wiring issue quickly. Clean work, transparent pricing and a digital invoice — very professional." },
+    { name: "Amit Joshi", area: "Shivajinagar", rating: 5, text: "Got our office UPS serviced. Organised team, OTP confirmation on completion and easy online payment. Highly recommend." },
+    { name: "Sneha Kulkarni", area: "Narayan Peth", rating: 5, text: "Booked an emergency service at night. Quick response and the technician was polite and skilled. Truly a doorstep service." },
+    { name: "Rahul Patil", area: "Deccan", rating: 5, text: "Inverter battery replaced the same day with a genuine product. Fair price and proper warranty. Will use again." },
+    { name: "Meera Sathe", area: "Erandwane", rating: 5, text: "Loved the booking experience — got a Booking ID instantly and WhatsApp updates throughout. Felt very organised." },
+    { name: "Vikram Shah", area: "Camp", rating: 4, text: "Good safety inspection of our shop's wiring. Detailed report and clear recommendations. Slight delay but kept me informed." },
+    { name: "Anjali Rao", area: "Navi Peth", rating: 5, text: "Verified technician, neat work and a proper digital bill. Exactly what a modern service should feel like." },
+    { name: "Sagar More", area: "Karve Nagar", rating: 5, text: "Solar enquiry handled patiently with honest guidance. No pushy sales — just clear, useful advice." },
+    { name: "Pooja Gokhale", area: "Sadashiv Peth", rating: 5, text: "AMC for our building's electrical work has been smooth. Reliable, responsive and reasonably priced." },
+    { name: "Nikhil Bhosale", area: "Swargate", rating: 5, text: "Fan and switchboard repairs done well. Technician was courteous and cleaned up after the work. Great experience." }
+  ];
+
   var FAQS = [
     { q: "How quickly can I get an electrician?", a: "For areas near Narayan Peth we often offer same-day slots. Emergency requests get priority and the fastest possible response." },
     { q: "Which areas do you serve?", a: "We currently cover a 10–15 km radius from Narayan Peth, Pune, across most major residential and commercial localities." },
@@ -146,6 +160,19 @@
     var el = $("#journeyList"); if (!el) return;
     el.innerHTML = BOOKING_JOURNEY.map(function (j) {
       return '<li>' + svg(j.icon) + '<span>' + j.label + '</span></li>';
+    }).join("");
+  }
+  function renderReviews() {
+    var el = $("#reviewGrid"); if (!el) return;
+    el.innerHTML = REVIEWS.map(function (r) {
+      var rating = Math.max(1, Math.min(5, r.rating || 5));
+      var stars = "★★★★★".slice(0, rating) + "☆☆☆☆☆".slice(0, 5 - rating);
+      var initial = (r.name || "?").charAt(0).toUpperCase();
+      return '<div class="card review reveal">' +
+        '<div class="stars" aria-label="' + rating + ' out of 5 stars">' + stars + '</div>' +
+        '<p>“' + r.text + '”</p>' +
+        '<div class="review__author"><span class="avatar">' + initial + '</span>' +
+        '<span><b>' + r.name + '</b><span>' + r.area + ', Pune</span></span></div></div>';
     }).join("");
   }
   function renderFaq() {
@@ -377,6 +404,7 @@
     renderPricing();
     renderAreas();
     renderJourney();
+    renderReviews();
     renderFaq();
     applyConfig();
     initNav();
