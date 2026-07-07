@@ -1,0 +1,17 @@
+# Secrets — NEVER commit
+api/secrets.php
+.env
+.env.*
+!.env.example
+
+# PHP / Composer
+vendor/
+composer.lock
+
+# Dependencies
+node_modules/
+
+# Logs / OS
+*.log
+.DS_Store
+Thumbs.db

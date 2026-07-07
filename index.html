@@ -111,17 +111,15 @@
                 <span class="field__error">Enter a valid 10-digit mobile number.</span>
               </div>
               <div class="field">
+                <label for="email">Email <small style="color:var(--muted);font-weight:500">(optional)</small></label>
+                <input type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com" />
+                <span class="field__error">Enter a valid email address.</span>
+              </div>
+              <div class="field">
                 <label for="service">Service Required <span class="req">*</span></label>
                 <select id="service" name="service">
+                  <!-- Options populated from the frozen catalogue by js/main.js -->
                   <option value="">Select a service…</option>
-                  <option>Residential Electrical</option>
-                  <option>Commercial Electrical</option>
-                  <option>UPS &amp; Inverter</option>
-                  <option>Battery Replacement</option>
-                  <option>Solar Services</option>
-                  <option>Electrical Safety Inspection</option>
-                  <option>AMC (Annual Maintenance)</option>
-                  <option>Emergency Service</option>
                 </select>
                 <span class="field__error">Please choose a service.</span>
               </div>
@@ -156,6 +154,21 @@
             <button type="submit" class="btn btn--primary btn--block btn--lg" style="margin-top:16px" id="submitBtn">Confirm Booking</button>
             <p class="form-note">By booking you agree to be contacted on WhatsApp/SMS regarding your service. Material charges extra where applicable.</p>
           </form>
+
+          <!-- OTP verification step (shown after "Confirm Booking"; frozen journey requires OTP before Booking ID) -->
+          <div class="otp-panel" id="otpPanel">
+            <button type="button" class="otp-back" id="otpBack">← Change details</button>
+            <div class="otp-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="var(--brand)" aria-hidden="true"><path d="M6 10V8a6 6 0 0 1 12 0v2h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h1Zm2 0h8V8a4 4 0 0 0-8 0v2Zm4 4a1.5 1.5 0 0 0-1 2.6V18h2v-1.4a1.5 1.5 0 0 0-1-2.6Z"/></svg>
+            </div>
+            <h3 style="margin:6px 0">Verify it's you</h3>
+            <p style="margin:0 0 14px">Enter the 6-digit code sent to <strong id="otpPhone"></strong></p>
+            <input type="text" id="otpCode" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="••••••" aria-label="6-digit OTP" />
+            <span class="field__error" id="otpError">Incorrect or expired code. Please try again.</span>
+            <p class="otp-demo" id="otpDemo" hidden></p>
+            <button type="button" class="btn btn--primary btn--block btn--lg" id="otpVerifyBtn" style="margin-top:12px">Verify &amp; Confirm Booking</button>
+            <p class="form-note" style="margin-top:12px">Didn't get it? <a href="#" id="otpResend">Resend OTP</a> <span id="otpTimer"></span></p>
+          </div>
 
           <!-- Success state (revealed by JS) -->
           <div class="form-success" id="formSuccess" role="status" aria-live="polite">
@@ -240,11 +253,18 @@
       <div class="container">
         <div class="section__head">
           <span class="eyebrow">Transparent Pricing</span>
-          <h2>Fixed Starting Prices</h2>
-          <p>No hidden charges — know the starting price before you book.</p>
+          <h2>Fixed, Transparent Pricing</h2>
+          <p>Professional service at fair, fixed prices — you know the labour charge before you book. No surprises.</p>
         </div>
-        <div class="grid grid--3" id="pricingGrid"></div>
-        <p class="price-note">* Prices are starting estimates. Material charges extra where applicable. Final quote shared after inspection.</p>
+        <div class="grid grid--2" id="pricingGrid"></div>
+        <div id="premiumBox" style="margin-top:16px"></div>
+        <ul class="price-rules">
+          <li>Visit charge ₹299 <small>waived if labour exceeds ₹1,000</small></li>
+          <li>Emergency visit ₹599 <small>7 PM – 10 PM</small></li>
+          <li>Material extra <small>with your approval</small></li>
+          <li>Quotations valid 7 days</li>
+          <li>GST extra where applicable</li>
+        </ul>
       </div>
     </section>
 

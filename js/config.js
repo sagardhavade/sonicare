@@ -10,6 +10,31 @@ const CONFIG = {
   // The form POSTs FormData here and expects a JSON response.
   bookingEndpoint: "",
 
+  // ---- CRM lead API (Trio Corporation) ----
+  // Booking submissions are pushed here as a GET request with query params:
+  //   user, pass, name, requirement, email, phone, address
+  // Set enabled:false to skip the CRM call (demo mode / local testing).
+  crm: {
+    enabled: true,
+    url: "https://sonic.triocorporation.com/api/Leads/Website",
+    user: "Website",
+    pass: "WebsiteAPI",
+  },
+
+  // ---- OTP verification (frozen journey: OTP BEFORE Booking ID) ----
+  // Handled by the PHP backend in /api/otp/ (emails the code via Gmail SMTP).
+  // OTP is triggered only when the customer provides an email (see main.js).
+  // Endpoints are relative, so the site must be served by the PHP server
+  //   • local dev:  php -S localhost:8000   (then open http://localhost:8000)
+  //   • production: your VPS serving these files + PHP
+  // Set both to "" to fall back to a client-side DEMO OTP (code shown on screen).
+  otp: {
+    enabled: true,
+    sendUrl: "/api/otp/send.php",     // POST { phone, email, name } -> { token }
+    verifyUrl: "/api/otp/verify.php", // POST { phone, otp, token }  -> { verified }
+    resendSeconds: 30,
+  },
+
   // Contact details
   whatsappNumber: "919021244333", // international format, no "+" or spaces
   phone: "+919021244333",

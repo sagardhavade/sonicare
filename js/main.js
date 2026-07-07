@@ -32,22 +32,25 @@
     chat: '<path d="M4 3h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H8l-4 4V4a1 1 0 0 1 1-1Zm3 5v2h10V8H7Zm0 4v2h7v-2H7Z"/>',
     sms: '<path d="M3 4h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H7l-4 4V5a1 1 0 0 1 1-1Zm4 5v2h10V9H7Zm0 4v2h6v-2H7Z"/>',
     user: '<path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5 0-9 2.5-9 6v2h18v-2c0-3.5-4-6-9-6Z"/>',
-    pin: '<path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/>'
+    pin: '<path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/>',
+    bulb: '<path d="M12 2a7 7 0 0 0-4.2 12.6c.5.4.8 1 .9 1.6l.1.8h6.4l.1-.8c.1-.6.4-1.2.9-1.6A7 7 0 0 0 12 2Zm-3 15h6v1a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-1Z"/>',
+    plug: '<path d="M9 2v6H7v3a5 5 0 0 0 4 4.9V22h2v-6.1A5 5 0 0 0 17 11V8h-2V2h-2v6h-2V2H9Z"/>'
   };
   function svg(name) {
     return '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' + (ICONS[name] || ICONS.bolt) + '</svg>';
   }
 
   /* ---------- Content data ---------- */
+  // 8 frozen homepage categories (customers pick a category, then a service).
   var SERVICES = [
-    { icon: "home", title: "Residential", desc: "Wiring, repairs, fittings & safe home electrical work." },
-    { icon: "building", title: "Commercial", desc: "Offices, shops & industrial electrical solutions." },
-    { icon: "battery", title: "UPS & Inverter", desc: "Sales, install & repair of UPS and inverters." },
-    { icon: "bolt", title: "Battery Replacement", desc: "Genuine batteries for inverters & UPS systems." },
-    { icon: "sun", title: "Solar Services", desc: "Residential & commercial solar install + maintenance." },
-    { icon: "shield", title: "Safety Inspection", desc: "Full electrical safety audits & load checks." },
-    { icon: "wrench", title: "AMC", desc: "Annual maintenance contracts for peace of mind." },
-    { icon: "alert", title: "Emergency Services", desc: "Rapid response for urgent electrical faults." }
+    { icon: "wrench", title: "Electrical Repairs", desc: "Switches, sockets, MCB, fuse, regulators, doorbells & fault diagnosis." },
+    { icon: "bulb", title: "Lighting & Fans", desc: "LED, tube, ceiling & outdoor lights; ceiling, exhaust & wall fans." },
+    { icon: "bolt", title: "UPS & Inverters", desc: "UPS installation, health checks & inverter wiring." },
+    { icon: "battery", title: "Batteries", desc: "Battery replacement & health checks for inverters and UPS." },
+    { icon: "plug", title: "New Wiring & Power Points", desc: "New power, light, fan, TV & router/LAN points." },
+    { icon: "shield", title: "Electrical Safety Inspection", desc: "Safety audits, earthing, load analysis & DB inspection." },
+    { icon: "building", title: "Office & Clinic Maintenance", desc: "Commercial visits & maintenance for offices and clinics." },
+    { icon: "clock", title: "Annual Maintenance (AMC)", desc: "Annual maintenance contracts with priority service." }
   ];
 
   // "Why Trust Sonic?" — real, verifiable facts (no invented metrics).
@@ -82,10 +85,67 @@
     { icon: "star", label: "Google review request" }
   ];
 
-  var PRICING = [
-    { title: "Home Visit & Diagnosis", price: "₹199", unit: "/ visit", points: ["On-site inspection", "Expert assessment", "Adjusted in final bill"] },
-    { title: "Switch / Socket Repair", price: "₹149", unit: "starting", points: ["Per point", "Genuine components", "Service warranty"] },
-    { title: "Inverter / UPS Service", price: "₹499", unit: "starting", points: ["Full diagnostics", "Battery health check", "Performance tuning"] }
+  // Frozen Service Catalogue V1.0 — fixed labour prices (material extra).
+  var CATALOGUE = [
+    { cat: "Electrical Repairs", icon: "wrench", items: [
+      { code: "SC101", name: "Fault Diagnosis / Visit", price: "₹299" },
+      { code: "SC102", name: "Switch Replacement", price: "₹149" },
+      { code: "SC103", name: "Socket Replacement", price: "₹199" },
+      { code: "SC104", name: "Modular Switch / Socket", price: "₹249" },
+      { code: "SC105", name: "Door Bell Installation", price: "₹299" },
+      { code: "SC106", name: "MCB Replacement", price: "₹399" },
+      { code: "SC107", name: "Fuse Replacement", price: "₹199" },
+      { code: "SC108", name: "Regulator Replacement", price: "₹249" }
+    ]},
+    { cat: "Lighting & Fans", icon: "bulb", items: [
+      { code: "SC201", name: "LED Bulb Installation", price: "₹99" },
+      { code: "SC202", name: "Tube Light Installation", price: "₹199" },
+      { code: "SC203", name: "Ceiling Light Installation", price: "₹299" },
+      { code: "SC204", name: "Chandelier Installation", price: "₹799+" },
+      { code: "SC205", name: "Outdoor Light Installation", price: "₹399" },
+      { code: "SC301", name: "Ceiling Fan Installation", price: "₹399" },
+      { code: "SC302", name: "Ceiling Fan Replacement", price: "₹449" },
+      { code: "SC303", name: "Exhaust Fan Installation", price: "₹399" },
+      { code: "SC304", name: "Wall Fan Installation", price: "₹349" }
+    ]},
+    { cat: "UPS & Inverters", icon: "bolt", items: [
+      { code: "SC401", name: "UPS Installation", price: "₹999" },
+      { code: "SC403", name: "UPS Health Check", price: "₹499" },
+      { code: "SC405", name: "Inverter Wiring Check", price: "₹499" }
+    ]},
+    { cat: "Batteries", icon: "battery", items: [
+      { code: "SC402", name: "Battery Replacement", price: "₹399" },
+      { code: "SC404", name: "Battery Health Check", price: "₹399" }
+    ]},
+    { cat: "New Wiring & Power Points", icon: "plug", items: [
+      { code: "SC501", name: "New Power Point", price: "₹699" },
+      { code: "SC502", name: "New Light Point", price: "₹599" },
+      { code: "SC503", name: "New Fan Point", price: "₹699" },
+      { code: "SC504", name: "TV Point", price: "₹699" },
+      { code: "SC505", name: "Router / LAN Power Point", price: "₹699" }
+    ]},
+    { cat: "Electrical Safety Inspection", icon: "shield", items: [
+      { code: "SC601", name: "Electrical Safety Inspection", price: "₹999" },
+      { code: "SC602", name: "Earthing Inspection", price: "₹799" },
+      { code: "SC603", name: "Load Analysis", price: "₹999" },
+      { code: "SC604", name: "Distribution Board Inspection", price: "₹799" }
+    ]},
+    { cat: "Office & Clinic Maintenance", icon: "building", items: [
+      { code: "SC701", name: "Office Electrical Visit", price: "₹499" },
+      { code: "SC702", name: "Office Electrical Maintenance", price: "Quotation" },
+      { code: "SC703", name: "Clinic Maintenance", price: "Quotation" }
+    ]},
+    { cat: "Annual Maintenance (AMC)", icon: "clock", items: [
+      { code: "SC704", name: "AMC Inspection Visit", price: "₹499" },
+      { code: "AMC", name: "Custom AMC Plan", price: "Quotation" }
+    ]}
+  ];
+
+  // Premium / project work — quotation based (Section H).
+  var PREMIUM = [
+    "Complete House Wiring", "Office Wiring", "Solar Installation",
+    "CCTV Installation", "EV Charger Installation (Future)",
+    "Generator Wiring", "Electrical Renovation"
   ];
 
   // SAMPLE reviews — replace with genuine customer/Google reviews when available.
@@ -133,16 +193,44 @@
     var el = $("#whyGrid"); if (el) el.innerHTML = html;
   }
   function renderPricing() {
-    var html = PRICING.map(function (p) {
-      var pts = p.points.map(function (pt) {
-        return '<li>' + svg("check") + '<span>' + pt + '</span></li>';
+    var el = $("#pricingGrid");
+    if (el) {
+      el.innerHTML = CATALOGUE.map(function (c) {
+        var rows = c.items.map(function (it) {
+          return '<li><span>' + it.name + '</span><b>' + it.price + '</b></li>';
+        }).join("");
+        return '<div class="card price-cat reveal">' +
+          '<div class="price-cat__head"><span class="icon-badge">' + svg(c.icon) + '</span><h3>' + c.cat + '</h3></div>' +
+          '<ul class="price-list">' + rows + '</ul>' +
+          '<a href="#book" class="btn btn--ghost btn--block">Book a service</a></div>';
       }).join("");
-      return '<div class="card price-card reveal"><h3>' + p.title + '</h3>' +
-        '<div class="price">' + p.price + ' <small>' + p.unit + '</small></div>' +
-        '<ul>' + pts + '</ul>' +
-        '<a href="#book" class="btn btn--brand btn--block">Book Now</a></div>';
-    }).join("");
-    var el = $("#pricingGrid"); if (el) el.innerHTML = html;
+    }
+    var pb = $("#premiumBox");
+    if (pb) {
+      pb.innerHTML = '<div class="card premium-box reveal">' +
+        '<div class="price-cat__head"><span class="icon-badge">' + svg("company") + '</span>' +
+        '<h3>Premium &amp; Project Work <small>· Quotation based</small></h3></div>' +
+        '<ul class="premium-list">' +
+        PREMIUM.map(function (p) { return '<li>' + svg("check") + '<span>' + p + '</span></li>'; }).join("") +
+        '</ul><a href="#book" class="btn btn--brand">Request a Quotation</a></div>';
+    }
+  }
+  // Populate the booking dropdown from the catalogue (category → exact service).
+  function renderServiceOptions() {
+    var sel = $("#service"); if (!sel) return;
+    var html = '<option value="">Select a service…</option>';
+    CATALOGUE.forEach(function (c) {
+      html += '<optgroup label="' + c.cat + '">';
+      c.items.forEach(function (it) {
+        var suffix = it.price === "Quotation" ? " — Quotation" : " — " + it.price;
+        html += '<option value="' + it.name + ' (' + it.code + ')">' + it.name + suffix + '</option>';
+      });
+      html += '</optgroup>';
+    });
+    html += '<optgroup label="Premium (Quotation)">';
+    PREMIUM.forEach(function (p) { html += '<option value="' + p + ' (Quotation)">' + p + '</option>'; });
+    html += '</optgroup>';
+    sel.innerHTML = html;
   }
   function renderTrustStrip() {
     var el = $("#trustStrip"); if (!el) return;
@@ -280,6 +368,8 @@
     var rules = {
       name: function (v) { return v.trim().length >= 2; },
       mobile: function (v) { return /^[6-9]\d{9}$/.test(v.trim()); },
+      // Email is optional — valid only if left blank OR a proper address.
+      email: function (v) { return v.trim() === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); },
       service: function (v) { return v !== ""; },
       date: function (v) { return v !== ""; },
       time: function (v) { return v !== ""; },
@@ -299,6 +389,9 @@
     var form = $("#bookingForm");
     if (!form) return;
 
+    var state = { phone: "", email: "", name: "", code: "", token: "", bookingId: "" };
+    var resendTimer = null;
+
     // min date = today
     var dateInput = form.elements["date"];
     if (dateInput) {
@@ -312,6 +405,139 @@
       if (field) field.classList.remove("invalid");
     });
 
+    function setSubmit(disabled, label) {
+      var btn = $("#submitBtn");
+      if (!btn) return;
+      btn.disabled = disabled;
+      btn.textContent = label || "Confirm Booking";
+    }
+
+    /* ----- OTP helpers ----- */
+    var otpEnabled = !!(CONFIG.otp && CONFIG.otp.enabled);
+    var otpMock = !(CONFIG.otp && CONFIG.otp.sendUrl && CONFIG.otp.verifyUrl);
+
+    function captureContact() {
+      state.phone = form.elements["mobile"].value.trim();
+      state.email = form.elements["email"] ? form.elements["email"].value.trim() : "";
+      state.name = form.elements["name"].value.trim();
+    }
+    function sendOtp() {
+      captureContact();
+      if (otpMock) { // demo: generate a code locally (NOT secure — real code lives server-side)
+        state.code = String(Math.floor(100000 + Math.random() * 900000));
+        return Promise.resolve();
+      }
+      return fetch(CONFIG.otp.sendUrl, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: state.phone, email: state.email, name: state.name })
+      }).then(function (r) {
+        if (!r.ok) throw new Error("otp send failed");
+        return r.json();
+      }).then(function (d) { state.token = (d && d.token) || ""; });
+    }
+    function verifyOtp(code) {
+      if (otpMock) return Promise.resolve(code === state.code);
+      return fetch(CONFIG.otp.verifyUrl, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: state.phone, otp: code, token: state.token })
+      }).then(function (r) {
+        if (!r.ok) return false;
+        return r.json().then(function (d) { return !!(d && (d.verified || d.success)); }).catch(function () { return false; });
+      });
+    }
+
+    function startResendTimer() {
+      var secs = (CONFIG.otp && CONFIG.otp.resendSeconds) || 30;
+      var resend = $("#otpResend"), timer = $("#otpTimer");
+      stopResendTimer();
+      if (resend) { resend.style.pointerEvents = "none"; resend.style.opacity = ".5"; }
+      if (timer) timer.textContent = "(" + secs + "s)";
+      resendTimer = setInterval(function () {
+        secs--;
+        if (timer) timer.textContent = secs > 0 ? "(" + secs + "s)" : "";
+        if (secs <= 0) { stopResendTimer(); if (resend) { resend.style.pointerEvents = ""; resend.style.opacity = ""; } }
+      }, 1000);
+    }
+    function stopResendTimer() { if (resendTimer) { clearInterval(resendTimer); resendTimer = null; } }
+
+    function showDemoHint() {
+      var demo = $("#otpDemo");
+      if (!demo) return;
+      if (otpMock) { demo.hidden = false; demo.textContent = "Demo mode — your code is " + state.code; }
+      else { demo.hidden = true; }
+    }
+    function showOtpPanel() {
+      var panel = $("#otpPanel");
+      form.style.display = "none";
+      panel.classList.add("show");
+      // Code is delivered by email; show the destination address.
+      var ph = $("#otpPhone"); if (ph) ph.textContent = state.email || ("+91 " + state.phone);
+      var code = $("#otpCode"); if (code) code.value = "";
+      var err = $("#otpError"); if (err) err.style.display = "none";
+      showDemoHint();
+      panel.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (code) setTimeout(function () { code.focus(); }, 60);
+      startResendTimer();
+    }
+    function backToForm() {
+      var panel = $("#otpPanel"); if (panel) panel.classList.remove("show");
+      form.style.display = "";
+      stopResendTimer();
+      setSubmit(false, "Confirm Booking");
+    }
+
+    /* ----- Booking finalisation: generate Booking ID + push lead to CRM ----- */
+    function finalizeBooking() {
+      var f = form.elements;
+      var bookingId = genBookingId();
+      state.bookingId = bookingId;
+      // "requirement" bundles the service plus preferred slot & booking id for the CRM.
+      var requirement = f["service"].value +
+        " | Preferred: " + f["date"].value + " " + f["time"].value +
+        " | Booking " + bookingId;
+
+      function showSuccess() {
+        form.style.display = "none";
+        var panel = $("#otpPanel"); if (panel) panel.classList.remove("show");
+        var box = $("#formSuccess");
+        $("#bookingId").textContent = bookingId;
+        box.classList.add("show");
+        box.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      function fail() {
+        alert("Sorry, we couldn't save your booking right now. Please call us or reach out on WhatsApp.");
+        backToForm();
+      }
+
+      // Push the lead to the Trio CRM (GET with query params).
+      if (CONFIG.crm && CONFIG.crm.enabled && CONFIG.crm.url) {
+        var params = {
+          user: CONFIG.crm.user,
+          pass: CONFIG.crm.pass,
+          name: f["name"].value.trim(),
+          requirement: requirement,
+          email: f["email"] ? f["email"].value.trim() : "",
+          phone: f["mobile"].value.trim(),
+          address: f["address"].value.trim()
+          // Note: the optional photo cannot be sent via this GET API.
+        };
+        var url = CONFIG.crm.url + "?" + Object.keys(params).map(function (k) {
+          return encodeURIComponent(k) + "=" + encodeURIComponent(params[k]);
+        }).join("&");
+        // Cross-origin CRM without CORS headers → no-cors (request sent, response opaque).
+        fetch(url, { method: "GET", mode: "no-cors" }).then(showSuccess).catch(fail);
+      } else if (CONFIG.bookingEndpoint) {
+        var data = new FormData(form);
+        data.append("bookingId", bookingId);
+        fetch(CONFIG.bookingEndpoint, { method: "POST", body: data })
+          .then(function (res) { if (!res.ok) throw new Error("Request failed"); showSuccess(); })
+          .catch(fail);
+      } else {
+        showSuccess(); // demo mode
+      }
+    }
+
+    /* ----- Events ----- */
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       if (!validate(form)) {
@@ -319,41 +545,51 @@
         if (firstBad) firstBad.focus();
         return;
       }
+      // Frozen journey: OTP verification BEFORE Booking ID is generated.
+      // OTP is delivered by email, so only run it when the customer gave one.
+      // (SMS OTP for mobile can be enabled later via the backend's SMS gateway.)
+      var email = form.elements["email"] ? form.elements["email"].value.trim() : "";
+      if (!otpEnabled || !email) { setSubmit(true, "Submitting…"); finalizeBooking(); return; }
+      setSubmit(true, "Sending OTP…");
+      sendOtp().then(function () {
+        setSubmit(false, "Confirm Booking");
+        showOtpPanel();
+      }).catch(function () {
+        setSubmit(false, "Confirm Booking");
+        alert("Couldn't send the verification code. Please check your email address or try again.");
+      });
+    });
 
-      var btn = $("#submitBtn");
-      btn.disabled = true;
-      btn.textContent = "Submitting…";
+    var verifyBtn = $("#otpVerifyBtn");
+    if (verifyBtn) verifyBtn.addEventListener("click", function () {
+      var codeInput = $("#otpCode"), err = $("#otpError");
+      var code = (codeInput.value || "").trim();
+      if (!/^\d{6}$/.test(code)) { err.textContent = "Enter the 6-digit code."; err.style.display = "block"; codeInput.focus(); return; }
+      verifyBtn.disabled = true; verifyBtn.textContent = "Verifying…";
+      verifyOtp(code).then(function (okv) {
+        verifyBtn.disabled = false; verifyBtn.textContent = "Verify & Confirm Booking";
+        if (okv) { stopResendTimer(); finalizeBooking(); }
+        else { err.textContent = "Incorrect or expired code. Please try again."; err.style.display = "block"; codeInput.focus(); }
+      }).catch(function () {
+        verifyBtn.disabled = false; verifyBtn.textContent = "Verify & Confirm Booking";
+        err.textContent = "Verification failed. Please try again."; err.style.display = "block";
+      });
+    });
 
-      var bookingId = genBookingId();
-      var data = new FormData(form);
-      data.append("bookingId", bookingId);
+    var backBtn = $("#otpBack");
+    if (backBtn) backBtn.addEventListener("click", backToForm);
 
-      function showSuccess() {
-        form.style.display = "none";
-        var box = $("#formSuccess");
-        $("#bookingId").textContent = bookingId;
-        box.classList.add("show");
-        box.scrollIntoView({ behavior: "smooth", block: "center" });
-        // ---- BACKEND HOOK (future) ----
-        // On a real submission the server would: create a lead in BizPlus ERP,
-        // send WhatsApp + SMS confirmation, and trigger OTP-verified workflow.
-      }
+    var resendLink = $("#otpResend");
+    if (resendLink) resendLink.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (resendTimer) return; // still in cooldown
+      sendOtp().then(function () { showDemoHint(); startResendTimer(); });
+    });
 
-      if (CONFIG.bookingEndpoint) {
-        fetch(CONFIG.bookingEndpoint, { method: "POST", body: data })
-          .then(function (res) {
-            if (!res.ok) throw new Error("Request failed");
-            showSuccess();
-          })
-          .catch(function () {
-            btn.disabled = false;
-            btn.textContent = "Confirm Booking";
-            alert("Sorry, we couldn't submit your booking right now. Please call us or try again.");
-          });
-      } else {
-        // Demo mode: no backend configured.
-        showSuccess();
-      }
+    var otpInput = $("#otpCode");
+    if (otpInput) otpInput.addEventListener("input", function () {
+      this.value = this.value.replace(/\D/g, "").slice(0, 6);
+      var err = $("#otpError"); if (err) err.style.display = "none";
     });
   }
 
@@ -402,6 +638,7 @@
     renderServices();
     renderWhy();
     renderPricing();
+    renderServiceOptions();
     renderAreas();
     renderJourney();
     renderReviews();
