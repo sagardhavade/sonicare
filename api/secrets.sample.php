@@ -17,6 +17,11 @@ return [
     // Optional SMS gateway (leave '' to disable). {phone} and {otp} are replaced.
     'SMS_API_URL'    => '',
 
+    // Razorpay — Key ID is used in the browser; Key Secret stays server-side only.
+    'RAZORPAY_KEY_ID'     => 'rzp_test_xxxxxxxxxxxxxx',
+    'RAZORPAY_KEY_SECRET' => 'your-razorpay-key-secret',
+    'PAY_LINK_SECRET'     => '',   // set to require signed pay-links (anti-tamper)
+
     // Restrict to your site origin in production, e.g. 'https://soniccare.in'
     'CORS_ORIGIN'    => '*',
 ];

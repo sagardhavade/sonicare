@@ -3,15 +3,15 @@
 Static site (`index.html`, `css/`, `js/`) + a small **PHP OTP backend** in `api/`
 that emails a verification code via Gmail SMTP before a booking is confirmed.
 
-## 1. Install the mailer dependency (PHPMailer)
+## 1. Requirements (no Composer, no libraries)
 
-From the project root, on your VPS (or locally):
+Everything uses PHP built-ins:
+- **Email** — sent over Gmail SMTP via PHP sockets (`api/lib/mailer.php`). Needs the
+  **openssl** extension and **outbound TCP port 465** open on the server.
+- **Razorpay** — plain cURL (`ext-curl`).
+- **OTP tokens** — `hash_hmac` (built-in).
 
-```bash
-composer install        # reads composer.json → creates vendor/
-```
-
-If you don't have Composer: https://getcomposer.org/download/ (or `dnf install composer` / `yum install composer` on CentOS).
+No `composer install` and no `vendor/` directory are needed.
 
 ## 2. Configure secrets
 
@@ -52,11 +52,31 @@ enter it → Booking ID is generated → lead is pushed to the Trio CRM.
 - Ensure `/api/otp/send.php` and `/api/otp/verify.php` are reachable at the same
   origin as the site (so no CORS needed). If the API is on a different host, set
   `CORS_ORIGIN` in `secrets.php`.
-- Upload `vendor/` (or run `composer install` on the server).
 - Keep `api/secrets.php` on the server only — it is not in git.
 - Gmail SMTP uses port **465** (SMTPS) — make sure outbound 465 is open.
 
-## 5. Toggle / demo mode
+## 5. Razorpay invoice payments (`pay.html`)
+
+After a job, the CRM sends the customer a link:
+
+```
+https://your-site/pay.html?booking=SC-260707-1234&amount=1499&name=Rahul&email=r@x.com&phone=8380045525
+```
+
+`pay.html` → `api/pay/order.php` (creates the Razorpay order) → Razorpay Checkout →
+`api/pay/verify.php` (verifies the signature server-side). The **Key Secret never
+reaches the browser**; the Key ID is returned by `order.php`.
+
+- Keys live in `secrets.php` (`RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`). Current keys are **test** (`rzp_test_…`).
+- Go live: replace with your live keys (`rzp_live_…`) in `secrets.php`.
+- **Amount tamper protection (recommended):** the amount sits in the URL, so a user
+  could edit it. Set `PAY_LINK_SECRET` in `secrets.php` and have the CRM append a
+  signature so `order.php` rejects tampered links:
+  `sig = HMAC_SHA256("<booking>|<amount>", PAY_LINK_SECRET)` → add `&sig=<sig>` to the link.
+  Best practice is for the CRM (which holds the real invoice amount) to build these links.
+- `checkout.razorpay.com` must be reachable (it's loaded on `pay.html`).
+
+## 6. Toggle / demo mode
 
 In `js/config.js`:
 - `otp.enabled: false` — skip OTP entirely.

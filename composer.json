@@ -1,9 +1,0 @@
-{
-  "name": "soniccare/website",
-  "description": "Sonic Care landing page + PHP OTP email backend",
-  "type": "project",
-  "require": {
-    "php": ">=7.4",
-    "phpmailer/phpmailer": "^6.9"
-  }
-}

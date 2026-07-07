@@ -10,15 +10,17 @@ const CONFIG = {
   // The form POSTs FormData here and expects a JSON response.
   bookingEndpoint: "",
 
-  // ---- CRM lead API (Trio Corporation) ----
-  // Booking submissions are pushed here as a GET request with query params:
-  //   user, pass, name, requirement, email, phone, address
+  // ---- CRM lead API (via our PHP backend) ----
+  // The booking is POSTed to this backend endpoint, which signs the Razorpay
+  // pay-link with the selected service's price, embeds it in the CRM
+  // "requirement" field, and forwards the lead to the BizPlus CRM server-side.
+  // The CRM url/user/pass now live in api/secrets.php (CRM_URL/CRM_USER/CRM_PASS),
+  // NOT here — keeping credentials out of client JavaScript.
   // Set enabled:false to skip the CRM call (demo mode / local testing).
+  // Requires the site to be served by PHP (same server as /api/otp/).
   crm: {
     enabled: true,
-    url: "https://sonic.triocorporation.com/api/Leads/Website",
-    user: "Website",
-    pass: "WebsiteAPI",
+    leadUrl: "/api/crm/lead.php",
   },
 
   // ---- OTP verification (frozen journey: OTP BEFORE Booking ID) ----
@@ -35,8 +37,20 @@ const CONFIG = {
     resendSeconds: 30,
   },
 
+  // ---- Razorpay invoice payments (pay.html) ----
+  // The CRM sends customers a link like:
+  //   pay.html?booking=SC-260707-1234&amount=1499&name=...&email=...&phone=...
+  // The Razorpay Key ID comes from the server (order.php); the Key Secret
+  // stays server-side only. Only these public settings live here.
+  pay: {
+    orderUrl: "/api/pay/order.php",   // POST { amount, booking, ... } -> { orderId, keyId, ... }
+    verifyUrl: "/api/pay/verify.php", // POST { razorpay_* }           -> { verified }
+    businessName: "Sonic Care",
+    themeColor: "#0b5fb0",
+  },
+
   // Contact details
-  whatsappNumber: "919021244333", // international format, no "+" or spaces
+  whatsappNumber: "919921388999", // international format, no "+" or spaces
   phone: "+919021244333",
   email: "info@sonicgroup.co.in",
 

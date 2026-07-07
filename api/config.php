@@ -26,3 +26,17 @@ function read_json_body() {
     if (is_array($data)) return $data;
     return $_POST; // fallback for form-encoded posts
 }
+
+/* Apply CA-verification options to a cURL handle.
+   Keeps SSL verification ON. If the server has no curl.cainfo configured
+   (common on Windows/XAMPP), fall back to the CA bundle shipped in api/lib,
+   so HTTPS calls to the CRM / Razorpay verify correctly everywhere.
+   Refresh api/lib/cacert.pem periodically from https://curl.se/ca/cacert.pem */
+function curl_apply_ca($ch) {
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+    if (ini_get('curl.cainfo') === '' || ini_get('curl.cainfo') === false) {
+        $bundled = __DIR__ . '/lib/cacert.pem';
+        if (is_readable($bundled)) curl_setopt($ch, CURLOPT_CAINFO, $bundled);
+    }
+}
