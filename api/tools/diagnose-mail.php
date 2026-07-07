@@ -34,10 +34,14 @@ foreach (['SMTP_USER', 'SMTP_PASS', 'MAIL_FROM'] as $k) {
 /* 3) openssl extension (needed for ssl:// socket) */
 line('openssl extension', extension_loaded('openssl'), extension_loaded('openssl') ? '' : 'enable extension=openssl in php.ini');
 
-/* 4) outbound TCP 465 to smtp.gmail.com */
-$fp = @stream_socket_client('ssl://smtp.gmail.com:465', $errno, $errstr, 12);
+/* 4) outbound SMTP to smtp.gmail.com — test the configured port (default 587),
+      forcing IPv4 (dead IPv6 routes cause "Network is unreachable"). */
+$port = (int) ($S['SMTP_PORT'] ?? 587);
+$proto = $port === 465 ? 'ssl' : 'tcp';
+$ctx = stream_context_create(['socket' => ['bindto' => '0.0.0.0:0']]);
+$fp = @stream_socket_client("$proto://smtp.gmail.com:$port", $errno, $errstr, 12, STREAM_CLIENT_CONNECT, $ctx);
 $portOpen = (bool)$fp;
-line('connect smtp.gmail.com:465', $portOpen, $portOpen ? '' : "$errstr ($errno) — provider likely blocks outbound SMTP; ask them to unblock or use port 587/API");
+line("connect smtp.gmail.com:$port", $portOpen, $portOpen ? '' : "$errstr ($errno) — try SMTP_PORT 587 (or 465); if both fail the host blocks SMTP → use an HTTP email API");
 if ($portOpen) {
     stream_set_timeout($fp, 12);
     $banner = fgets($fp, 515);
