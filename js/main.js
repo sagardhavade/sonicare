@@ -412,11 +412,13 @@
     var state = { phone: "", email: "", name: "", code: "", token: "", bookingId: "" };
     var resendTimer = null;
 
-    // min date = today
+    // min date = today, and prefill today's date by default
     var dateInput = form.elements["date"];
     if (dateInput) {
       var t = new Date();
-      dateInput.min = t.getFullYear() + "-" + ("0" + (t.getMonth() + 1)).slice(-2) + "-" + ("0" + t.getDate()).slice(-2);
+      var today = t.getFullYear() + "-" + ("0" + (t.getMonth() + 1)).slice(-2) + "-" + ("0" + t.getDate()).slice(-2);
+      dateInput.min = today;
+      if (!dateInput.value) dateInput.value = today;
     }
 
     // clear error styling as the user fixes a field
