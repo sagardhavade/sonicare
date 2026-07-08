@@ -1,23 +1,35 @@
 <?php
 /* Sends the OTP email via Gmail SMTP using ONLY PHP built-ins — no Composer,
-   no PHPMailer. It opens an SSL socket to smtp.gmail.com:465 and authenticates
-   with the Gmail App Password from secrets.php.
+   no PHPMailer.
 
-   Note: PHP's mail() is intentionally NOT used — it cannot authenticate to
-   Gmail, so the app password would be ignored and messages would usually be
-   rejected (SPF/DKIM) or land in spam. Requires the openssl extension and
-   outbound TCP port 465 open on the server. */
+   Uses port 587 + STARTTLS by default (many VPS hosts block the implicit-SSL
+   port 465 but allow 587). Set SMTP_PORT=465 in secrets.php to use implicit
+   SSL instead. The connection is forced over IPv4 because a lot of VPS boxes
+   advertise an AAAA route they can't actually use → "Network is unreachable".
+
+   Requires the openssl extension and outbound TCP to the chosen SMTP port.
+   PHP's mail() is intentionally NOT used — it can't authenticate to Gmail. */
 
 function send_otp_email($toEmail, $toName, $code, $cfg) {
-    $host = 'smtp.gmail.com';
-    $port = 465;                       // implicit SSL
+    $host = $cfg['SMTP_HOST'] ?? 'smtp.gmail.com';
+    $port = (int) ($cfg['SMTP_PORT'] ?? 587);
     $user = $cfg['SMTP_USER'];
     $pass = $cfg['SMTP_PASS'];
     $from = $cfg['MAIL_FROM'];
     $fromName = $cfg['MAIL_FROM_NAME'] ?? 'Sonic Care';
+    $implicitSsl = ($port === 465);   // 465 = SSL from the start; 587 = STARTTLS
 
-    $fp = @stream_socket_client("ssl://{$host}:{$port}", $errno, $errstr, 15);
-    if (!$fp) { error_log("SMTP connect failed: $errstr ($errno)"); return false; }
+    // Verify the TLS cert against the bundled CA (works even if php.ini has no
+    // openssl.cafile), and force IPv4 to avoid dead-IPv6 "unreachable" errors.
+    $ssl = ['SNI_enabled' => true, 'peer_name' => $host,
+            'verify_peer' => true, 'verify_peer_name' => true];
+    $caFile = __DIR__ . '/cacert.pem';
+    if (is_readable($caFile)) $ssl['cafile'] = $caFile;
+    $ctx = stream_context_create(['socket' => ['bindto' => '0.0.0.0:0'], 'ssl' => $ssl]);
+
+    $transport = ($implicitSsl ? 'ssl://' : 'tcp://') . $host . ':' . $port;
+    $fp = @stream_socket_client($transport, $errno, $errstr, 15, STREAM_CLIENT_CONNECT, $ctx);
+    if (!$fp) { error_log("SMTP connect failed ($transport): $errstr ($errno)"); return false; }
     stream_set_timeout($fp, 15);
 
     // Read a (possibly multi-line) reply and check its 3-digit code.
@@ -30,14 +42,23 @@ function send_otp_email($toEmail, $toName, $code, $cfg) {
         $got = (int) substr($data, 0, 3);
         return in_array($got, (array) $codes, true);
     };
-    $cmd = function ($line) use ($fp) { fwrite($fp, $line . "\r\n"); };
-
-    $fail = function () use ($fp) {
-        @fwrite($fp, "QUIT\r\n"); fclose($fp); return false;
-    };
+    $cmd  = function ($line) use ($fp) { fwrite($fp, $line . "\r\n"); };
+    $fail = function () use ($fp) { @fwrite($fp, "QUIT\r\n"); fclose($fp); return false; };
 
     if (!$expect(220)) return $fail();
-    $cmd('EHLO soniccare');            if (!$expect(250)) return $fail();
+    $cmd('EHLO soniccare'); if (!$expect(250)) return $fail();
+
+    // Upgrade a plain 587 connection to TLS before authenticating.
+    if (!$implicitSsl) {
+        $cmd('STARTTLS'); if (!$expect(220)) return $fail();
+        $crypto = STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
+        if (defined('STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT')) $crypto |= STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT;
+        if (!stream_socket_enable_crypto($fp, true, $crypto)) {
+            error_log('SMTP STARTTLS negotiation failed'); return $fail();
+        }
+        $cmd('EHLO soniccare'); if (!$expect(250)) return $fail();
+    }
+
     $cmd('AUTH LOGIN');                if (!$expect(334)) return $fail();
     $cmd(base64_encode($user));        if (!$expect(334)) return $fail();
     $cmd(base64_encode($pass));        if (!$expect(235)) return $fail();  // auth OK

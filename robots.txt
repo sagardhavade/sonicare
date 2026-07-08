@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Payment page is per-invoice and should not be indexed
+Disallow: /pay.html
+Disallow: /api/
+
+Sitemap: https://mysonicare.com/sitemap.xml

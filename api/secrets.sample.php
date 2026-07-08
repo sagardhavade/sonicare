@@ -9,6 +9,9 @@ return [
     'SMTP_PASS'      => 'your16charapppassword',   // no spaces
     'MAIL_FROM'      => 'tcpltechsp@gmail.com',
     'MAIL_FROM_NAME' => 'Sonic Care',
+    // SMTP port: 587 = STARTTLS (default, works on most VPS); 465 = implicit SSL.
+    // Many hosts block 465 — leave this at 587 unless you know 465 is open.
+    'SMTP_PORT'      => 587,
 
     // Server-side secret for signing OTP tokens (long random string)
     'OTP_SECRET'     => 'replace-with-a-long-random-string',

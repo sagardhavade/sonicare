@@ -223,14 +223,16 @@
       html += '<optgroup label="' + c.cat + '">';
       c.items.forEach(function (it) {
         var suffix = it.price === "Quotation" ? " — Quotation" : " — " + it.price;
-        html += '<option value="' + it.name + ' (' + it.code + ')">' + it.name + suffix + '</option>';
+        html += '<option value="' + it.name + ' (' + it.code + ')" data-price="' + it.price + '">' + it.name + suffix + '</option>';
       });
       html += '</optgroup>';
     });
     html += '<optgroup label="Premium (Quotation)">';
-    PREMIUM.forEach(function (p) { html += '<option value="' + p + ' (Quotation)">' + p + '</option>'; });
+    PREMIUM.forEach(function (p) { html += '<option value="' + p + ' (Quotation)" data-price="Quotation">' + p + '</option>'; });
     html += '</optgroup>';
     sel.innerHTML = html;
+    // Keep the WhatsApp deep-links in sync with the chosen service + price.
+    sel.addEventListener("change", updateWaLinks);
   }
   function renderTrustStrip() {
     var el = $("#trustStrip"); if (!el) return;
@@ -275,7 +277,25 @@
 
   /* ---------- Config-driven links / text ---------- */
   function waLink() {
-    return "https://wa.me/" + CONFIG.whatsappNumber + "?text=" + encodeURIComponent(CONFIG.whatsappMessage);
+    var msg = CONFIG.whatsappMessage;
+    // If the customer has picked a service in the booking form, include the
+    // exact service name + price in the WhatsApp message.
+    var sel = $("#service");
+    if (sel && sel.value) {
+      var opt = sel.options[sel.selectedIndex];
+      var price = opt ? opt.getAttribute("data-price") : "";
+      msg += "\n\nService: " + sel.value;
+      if (price) msg += "\nPrice: " + price;
+    }
+    return "https://wa.me/" + CONFIG.whatsappNumber + "?text=" + encodeURIComponent(msg);
+  }
+  // (Re)apply the current WhatsApp deep-link to every [data-wa] button.
+  function updateWaLinks() {
+    $$("[data-wa]").forEach(function (a) {
+      a.setAttribute("href", waLink());
+      a.setAttribute("target", "_blank");
+      a.setAttribute("rel", "noopener");
+    });
   }
   // Set text on an element, or hide its <li> wrapper when value is empty.
   function setOrHide(id, value, prefix) {
@@ -287,7 +307,7 @@
     }
   }
   function applyConfig() {
-    $$("[data-wa]").forEach(function (a) { a.setAttribute("href", waLink()); a.setAttribute("target", "_blank"); a.setAttribute("rel", "noopener"); });
+    updateWaLinks();
     $$("[data-call]").forEach(function (a) { a.setAttribute("href", "tel:" + CONFIG.phone); });
 
     // Footer "Get In Touch" email link
@@ -392,11 +412,13 @@
     var state = { phone: "", email: "", name: "", code: "", token: "", bookingId: "" };
     var resendTimer = null;
 
-    // min date = today
+    // min date = today, and prefill today's date by default
     var dateInput = form.elements["date"];
     if (dateInput) {
       var t = new Date();
-      dateInput.min = t.getFullYear() + "-" + ("0" + (t.getMonth() + 1)).slice(-2) + "-" + ("0" + t.getDate()).slice(-2);
+      var today = t.getFullYear() + "-" + ("0" + (t.getMonth() + 1)).slice(-2) + "-" + ("0" + t.getDate()).slice(-2);
+      dateInput.min = today;
+      if (!dateInput.value) dateInput.value = today;
     }
 
     // clear error styling as the user fixes a field
@@ -491,10 +513,6 @@
       var f = form.elements;
       var bookingId = genBookingId();
       state.bookingId = bookingId;
-      // "requirement" bundles the service plus preferred slot & booking id for the CRM.
-      var requirement = f["service"].value +
-        " | Preferred: " + f["date"].value + " " + f["time"].value +
-        " | Booking " + bookingId;
 
       function showSuccess() {
         form.style.display = "none";
@@ -509,23 +527,28 @@
         backToForm();
       }
 
-      // Push the lead to the Trio CRM (GET with query params).
-      if (CONFIG.crm && CONFIG.crm.enabled && CONFIG.crm.url) {
-        var params = {
-          user: CONFIG.crm.user,
-          pass: CONFIG.crm.pass,
+      // Push the lead through our PHP backend, which signs the pay-link with the
+      // selected service's price and forwards it to the BizPlus CRM server-side.
+      // Same-origin request → we can read the real success/failure response.
+      if (CONFIG.crm && CONFIG.crm.enabled && CONFIG.crm.leadUrl) {
+        var payload = {
           name: f["name"].value.trim(),
-          requirement: requirement,
+          service: f["service"].value,
+          date: f["date"].value,
+          time: f["time"].value,
           email: f["email"] ? f["email"].value.trim() : "",
           phone: f["mobile"].value.trim(),
-          address: f["address"].value.trim()
-          // Note: the optional photo cannot be sent via this GET API.
+          address: f["address"].value.trim(),
+          bookingId: bookingId
+          // Note: the optional photo cannot be sent via this API.
         };
-        var url = CONFIG.crm.url + "?" + Object.keys(params).map(function (k) {
-          return encodeURIComponent(k) + "=" + encodeURIComponent(params[k]);
-        }).join("&");
-        // Cross-origin CRM without CORS headers → no-cors (request sent, response opaque).
-        fetch(url, { method: "GET", mode: "no-cors" }).then(showSuccess).catch(fail);
+        fetch(CONFIG.crm.leadUrl, {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        })
+          .then(function (res) { if (!res.ok) throw new Error("Request failed"); return res.json(); })
+          .then(function (d) { if (d && d.success) showSuccess(); else fail(); })
+          .catch(fail);
       } else if (CONFIG.bookingEndpoint) {
         var data = new FormData(form);
         data.append("bookingId", bookingId);

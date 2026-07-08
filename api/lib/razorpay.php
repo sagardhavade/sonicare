@@ -21,6 +21,7 @@ function rzp_create_order($amountPaise, $receipt, $notes, $cfg) {
         CURLOPT_POSTFIELDS     => $payload,
         CURLOPT_TIMEOUT        => 20,
     ]);
+    if (function_exists('curl_apply_ca')) curl_apply_ca($ch);
     $res  = curl_exec($ch);
     $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
     if ($res === false) { error_log('Razorpay order curl error: ' . curl_error($ch)); }
