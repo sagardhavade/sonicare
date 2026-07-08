@@ -35,6 +35,18 @@ const CONFIG = {
     resendSeconds: 30,
   },
 
+  // ---- Razorpay invoice payments (pay.html) ----
+  // The CRM sends customers a link like:
+  //   pay.html?booking=SC-260707-1234&amount=1499&name=...&email=...&phone=...
+  // The Razorpay Key ID comes from the server (order.php); the Key Secret
+  // stays server-side only. Only these public settings live here.
+  pay: {
+    orderUrl: "/api/pay/order.php",   // POST { amount, booking, ... } -> { orderId, keyId, ... }
+    verifyUrl: "/api/pay/verify.php", // POST { razorpay_* }           -> { verified }
+    businessName: "Sonic Care",
+    themeColor: "#0b5fb0",
+  },
+
   // Contact details
   whatsappNumber: "919021244333", // international format, no "+" or spaces
   phone: "+919021244333",

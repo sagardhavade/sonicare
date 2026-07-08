@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pay Your Invoice — Sonic Care</title>
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#0b5fb0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main class="pay-wrap">
+    <div class="pay-card card">
+      <a href="index.html" class="logo" style="justify-content:center;margin-bottom:6px">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="var(--brand)" aria-hidden="true"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-12H12l1-8Z"/></svg>
+        Sonic Care
+      </a>
+
+      <!-- Invalid link state -->
+      <div id="payInvalid" hidden>
+        <h2>Payment link not valid</h2>
+        <p class="pay-muted">This payment link is missing or incorrect. Please use the link sent to you, or contact us.</p>
+        <a href="index.html" class="btn btn--ghost btn--block">Back to home</a>
+      </div>
+
+      <!-- Pay state -->
+      <div id="payMain" hidden>
+        <p class="eyebrow" style="display:block;text-align:center">Secure Payment</p>
+        <h2 style="text-align:center;margin-bottom:4px">Pay Your Invoice</h2>
+        <div class="pay-amount" id="payAmount">₹0</div>
+        <ul class="pay-meta">
+          <li><span>Booking ID</span><b id="payBooking">—</b></li>
+          <li id="payNameRow"><span>Name</span><b id="payName">—</b></li>
+        </ul>
+        <button class="btn btn--primary btn--block btn--lg" id="payBtn">Pay Securely</button>
+        <p class="pay-muted" id="payStatus" style="text-align:center;margin:12px 0 0"></p>
+        <p class="pay-secure">🔒 Payments secured by Razorpay · UPI · Cards · Net-banking</p>
+      </div>
+
+      <!-- Success state -->
+      <div id="paySuccess" hidden style="text-align:center">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="var(--ok)" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm-1 14.4-4-4L8.4 11l2.6 2.6L15.6 9 17 10.4 11 16.4Z"/></svg>
+        <h2 style="margin:10px 0 4px">Payment Successful</h2>
+        <p class="pay-muted">Thank you! Your payment has been received.</p>
+        <div class="pay-amount" id="paidAmount" style="font-size:1.6rem">₹0</div>
+        <p class="pay-muted">Payment ID: <b id="paidId">—</b></p>
+        <a href="index.html" class="btn btn--brand btn--block" style="margin-top:8px">Done</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/pay.js" defer></script>
+</body>
+</html>
