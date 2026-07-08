@@ -1,0 +1,5 @@
+# Serve the custom 404 page for missing URLs
+ErrorDocument 404 /404.html
+
+# (optional) also send forbidden requests to the same page
+ErrorDocument 403 /404.html

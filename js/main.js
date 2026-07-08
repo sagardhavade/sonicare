@@ -515,12 +515,9 @@
       state.bookingId = bookingId;
 
       function showSuccess() {
-        form.style.display = "none";
-        var panel = $("#otpPanel"); if (panel) panel.classList.remove("show");
-        var box = $("#formSuccess");
-        $("#bookingId").textContent = bookingId;
-        box.classList.add("show");
-        box.scrollIntoView({ behavior: "smooth", block: "center" });
+        // Redirect to the dedicated thank-you page (clean conversion URL for
+        // GA4 / Google Ads) and carry the Booking ID so it can be shown there.
+        window.location.href = "thank-you.html?bid=" + encodeURIComponent(bookingId);
       }
       function fail() {
         alert("Sorry, we couldn't save your booking right now. Please call us or reach out on WhatsApp.");
