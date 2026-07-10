@@ -108,6 +108,19 @@ ul { margin: 0; padding: 0; list-style: none; }
 .hero__sub { font-size: 1.1rem; color: var(--body); max-width: 540px; }
 .hero__ctas { display: flex; flex-wrap: wrap; gap: 12px; margin: 22px 0 0; }
 
+/* Brand punch line — rendered as real text (the logo's baked-in tagline is
+   unreadable at header size). Amber to echo the "CARE" in the logo. */
+.tagline {
+  font-family: var(--font-head);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--accent-dark);
+  font-size: clamp(.95rem, 2.6vw, 1.18rem);
+  margin: 10px 0 8px;
+}
+.tagline--footer { color: var(--accent); font-size: .82rem; letter-spacing: .1em; margin: 12px 0 10px; }
+
 /* Photo-ready media slot (hero & about) */
 .hero__media, .about__media { width: 100%; }
 .media-ph {
